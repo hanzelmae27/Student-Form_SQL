@@ -252,19 +252,18 @@ public class studentForm extends javax.swing.JFrame {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
-      // 1. Get values from text fields
+    
         String id = studentIDtxt.getText().trim();
         String name = nametxt.getText().trim();
         String age = agetxt.getText().trim();
         String grade = gradetxt.getText().trim();
 
-        // 2. Check for empty fields
         if (id.isEmpty() || name.isEmpty() || age.isEmpty() || grade.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Fill out the form");
             return;
         }
 
-        // 3. Convert age to integer only
+       
         int ageInt;
         try {
             ageInt = Integer.parseInt(age);
@@ -273,22 +272,22 @@ public class studentForm extends javax.swing.JFrame {
             return;
         }
 
-        // 4. Add to JTable
+     
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.insertRow(0, new Object[]{id, name, ageInt, grade}); // ID as string
+        model.insertRow(0, new Object[]{id, name, ageInt, grade}); 
 
-        // 5. Clear input fields
+ 
         studentIDtxt.setText("");
         nametxt.setText("");
         agetxt.setText("");
         gradetxt.setText("");
 
-        // 6. Save to MySQL database
+        //Save to MySQL database
         try {
             Connection con = DBConnection.connect();
             String sql = "INSERT INTO students (student_id, name, age, grade) VALUES (?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, id);      // ID is string now
+            pst.setString(1, id);      
             pst.setString(2, name);
             pst.setInt(3, ageInt);
             pst.setString(4, grade);
@@ -309,21 +308,19 @@ public class studentForm extends javax.swing.JFrame {
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         // TODO add your handling code here:
                                                
-    // Clear all input text fields
+
     studentIDtxt.setText("");
     nametxt.setText("");
     agetxt.setText("");
     gradetxt.setText("");
     
-    // Optional: clear search and delete fields
+
     searchTXT.setText("Student ID or Name");
     deleteTxt.setText("ex. 1234-1234");
     
-    // Optional: clear table contents
     DefaultTableModel model = (DefaultTableModel) table.getModel();
     model.setRowCount(0);
     
-    // Optionally reload all students from database after clearing table
     loadStudentsFromDatabase(); 
 
     }//GEN-LAST:event_clearBtnActionPerformed
@@ -339,8 +336,7 @@ public class studentForm extends javax.swing.JFrame {
     }
 
     DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.setRowCount(0); // Clear table first
-
+    model.setRowCount(0); 
     try {
         Connection con = DBConnection.connect();
         String sql = "SELECT student_id, name, age, grade FROM students WHERE student_id LIKE ? OR name LIKE ?";
@@ -389,7 +385,7 @@ public class studentForm extends javax.swing.JFrame {
         "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
     if (confirm != JOptionPane.YES_OPTION) {
-        return; // user cancelled
+        return; 
     }
 
     try {
@@ -403,7 +399,7 @@ public class studentForm extends javax.swing.JFrame {
 
         if (rowsDeleted > 0) {
             JOptionPane.showMessageDialog(this, "Student deleted successfully!");
-            loadStudentsFromDatabase(); // refresh table
+            loadStudentsFromDatabase(); 
         } else {
             JOptionPane.showMessageDialog(this, "No student found with that ID.");
         }
@@ -428,7 +424,7 @@ public class studentForm extends javax.swing.JFrame {
 
      private void loadStudentsFromDatabase() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0); // clear table
+        model.setRowCount(0); 
 
             try {
                 Connection con = DBConnection.connect();
